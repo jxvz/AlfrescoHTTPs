@@ -1,5 +1,5 @@
-# 🔐 Alfresco HTTPS  
-**🔐🛠️ Passo a Passo para Configurar Nginx como Proxy e HTTPS para o Alfresco**  
+# 🔐 Alfresco HTTPS Local
+**🔐🛠️ Passo a Passo para Configurar Nginx como Proxy e HTTPS Local para o Alfresco**  
 Antes de iniciar é necessário ter o Nginx instalado no servidor.
 ```bash
 sudo apt install nginx -y
