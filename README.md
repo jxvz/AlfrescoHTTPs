@@ -1,32 +1,36 @@
-# 🔐 AlfrescoHTTPS  
-**Passo a Passo para Configurar Nginx como Proxy e HTTPS para o Alfresco**  
+# 🔐 Alfresco HTTPS  
+**🔐🛠️ Passo a Passo para Configurar Nginx como Proxy e HTTPS para o Alfresco**  
+Antes de iniciar é necessário ter o Nginx instalado no servidor.
+```bash
+sudo apt install nginx -y
+```
 ![Nginx](https://img.shields.io/badge/-Nginx-%23009639?logo=nginx&logoColor=white) ![OpenSSL](https://img.shields.io/badge/-OpenSSL-%23721416?logo=openssl&logoColor=white)
 
 ---
 
 ## 🔧 Configuração no Servidor Proxy (Linux/Nginx)
 
-### 1. Criar Autoridade Certificadora (CA) Local
+### 1. 🛡️➕ Criar Autoridade Certificadora (CA) Local
 ```bash
 openssl genrsa -out alfresco-CA.key 4096
 openssl req -x509 -new -nodes -key alfresco-CA.key -sha256 -days 3650 -out alfresco-CA.crt \
   -subj "/C=BR/ST=Estado/L=Cidade/O=Empresa/CN=alfresco.homologa"
 ```
 
-### 2. Gerar Chave Privada para o Alfresco
+### 2. 🔑➕ Gerar Chave Privada para o Alfresco
 
 ```bash
 openssl genrsa -out alfresco.key 2048
 ```
 
-### 3. Criar Certificate Signing Request (CSR)
+### 3. 📄✍️ Criar Certificate Signing Request (CSR)
 
 ```bash
 openssl req -new -key alfresco.key -out alfresco.csr \
   -subj "/C=BR/ST=Estado/L=Cidade/O=Empresa/CN=alfresco.homologa"
 ```
 
-### 4. Criar Arquivo de Extensão SAN (alfresco.ext)
+### 4. 📄🛠️ Criar Arquivo de Extensão SAN (alfresco.ext)
 
 ```bash 
 authorityKeyIdentifier=keyid,issuer
@@ -39,14 +43,14 @@ subjectAltName = @alt_names
 DNS.1 = alfresco.homologa
 ```
 
-### 5. Assinar Certificado com a CA
+### 5. 📜✔️🛡️ Assinar Certificado com a CA
 
 ```bash
 openssl x509 -req -in alfresco.csr -CA alfresco-CA.crt -CAkey alfresco-CA.key -CAcreateserial \
   -out alfresco.crt -days 825 -sha256 -extfile alfresco.ext
 ```
 
-### 6. Configurar Nginx (/etc/nginx/conf.d/alfresco.conf)
+### 6. 🖥️⚙️ Configurar Nginx (/etc/nginx/conf.d/alfresco.conf)
 
 ```bash
 
@@ -85,7 +89,7 @@ server {
 
 }
 ```
-### 7. Reiniciar Nginx
+### 7. 🖥️🔄 Reiniciar Nginx
 
 ```bash
 sudo systemctl restart nginx
